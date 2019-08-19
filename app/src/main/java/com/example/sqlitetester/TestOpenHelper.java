@@ -14,29 +14,46 @@ public class TestOpenHelper extends SQLiteOpenHelper {
 
     //SQL create tables
 
-    private static final String CREATE_TABLE =
-            "CREATE TABLE " + tableRules.TABLE_NAME + " (" + tableRules._ID +
-            " INTEGER PRIMARY KEY," + tableRules.COLUMN_NAME_TITLE + " TEXT," + tableRules.COLUMN_NAME_TEXT +
-            " TEXT)";
+
 
     private static final String DELETE_ENTRIES =
             "DROP TABLE IF EXISTS " + tableRules.TABLE_NAME;
+
     public TestOpenHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
+
     @Override
     public void onCreate(SQLiteDatabase db) {
-        try {
-            db.execSQL(CREATE_TABLE);
-            getWritableDatabase();
-            ContentValues values = new ContentValues();
-            values.put(tableRules.COLUMN_NAME_TITLE, "Test title");
-            values.put(tableRules.COLUMN_NAME_TEXT, "test text test text");
-            long rowID = db.insert(tableRules.TABLE_NAME, null, values);
-        } catch (Exception e){
-            Log.d("SQLite",e.getMessage());
-        }
+    try {
+         String CREATE_TABLE =
+                "CREATE TABLE IF NOT EXISTS " + tableRules.TABLE_NAME + " (" + tableRules._ID +
+                        " INTEGER PRIMARY KEY," + tableRules.COLUMN_NAME_TITLE + " TEXT," + tableRules.COLUMN_NAME_TEXT +
+                        " TEXT)";
+
+        db.execSQL(CREATE_TABLE);
+
+
+        //ContentValues values = new ContentValues();
+        //values.put(tableRules.COLUMN_NAME_TITLE, "Test title");
+        //values.put(tableRules.COLUMN_NAME_TEXT, "test text test text");
+        //long rowID = db.insert(tableRules.TABLE_NAME, null, values);
+    }catch (Exception e){
+        Log.d("SQLite",e.getMessage());
+    }
+
+
+
+    }
+
+    public void addValues() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(tableRules.COLUMN_NAME_TITLE, "Test title");
+        values.put(tableRules.COLUMN_NAME_TEXT, "test text test text");
+        db.insert(tableRules.TABLE_NAME, null, values);
+        db.close();
     }
 
     @Override
@@ -44,6 +61,10 @@ public class TestOpenHelper extends SQLiteOpenHelper {
         db.execSQL(DELETE_ENTRIES);
         onCreate(db);
     }
+
+
+
+
 
 
 }

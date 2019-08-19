@@ -1,5 +1,6 @@
 package com.example.sqlitetester;
 
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -27,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         openHelper = new TestOpenHelper(this);
-
+        openHelper.addValues();
 
         textView = findViewById(R.id.text_view);
         textView.setText("Database created");
